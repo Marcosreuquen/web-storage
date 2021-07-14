@@ -10,14 +10,11 @@ const routes = [
 
 export function initRouter(container: Element) {
   function goTo(path) {
-    console.log("go to: ", path);
     history.pushState({}, "", path);
     handleRoute(path);
   }
 
   function handleRoute(route: any) {
-    console.log(`handleRoute - nueva ruta: ${route}`);
-
     for (const r of routes) {
       if (r.path.test(route)) {
         const el = r.component({ lastState: State.getState() });

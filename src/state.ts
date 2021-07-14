@@ -24,13 +24,10 @@ const State = {
   listeners: [],
 
   getState(): Notes[] {
-    console.log("obteniendo datos del estado...");
     return this.data;
   },
 
   setState(data: Notes[]) {
-    console.log("Se ha agregado un nuevo estado");
-
     this.data = data;
     localStorage.setItem("notes", JSON.stringify(this.data));
     for (const cb of this.listeners) {
@@ -39,7 +36,6 @@ const State = {
   },
 
   addNewNote(content: string) {
-    console.log("Se agregó una nota");
     const note = new Notes(content, this.idGen());
     const data = this.getState();
     data.push(note);
@@ -47,25 +43,19 @@ const State = {
   },
 
   deleteNote(id: number) {
-    console.log("Se eliminó la nota con id: ", id);
     const newState = this.getState().filter((item) => item.id !== id);
     this.setState(newState);
   },
 
   checkedNote(id: number, value: boolean) {
-    console.log("Nota chequeada: ", id);
-
     const lastState = this.data.filter((item) => item.id !== id);
     let checkedNote = this.data.find((item) => item.id === id);
     checkedNote.checked = value;
     const newState = lastState.concat(checkedNote);
-    console.log(newState);
-
     this.setState(newState);
   },
 
   idGen() {
-    console.log("Generando ID para su nueva nota...");
     let id: number;
     if (this.getState().length < 1) {
       id = 1;
@@ -81,7 +71,6 @@ const State = {
   },
 
   suscribe(callback: (any) => any) {
-    console.log("Añadiendo nuevo callback al state: ", callback);
     this.listeners.push(callback);
   },
 };

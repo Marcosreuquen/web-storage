@@ -6,7 +6,6 @@ import { initRouter } from "./router";
 (function () {
   initRouter(document.querySelector("#root"));
   initCardComponent();
-  console.log("Obteniendo listado de listeners...", State.listeners);
 
   document.querySelector(".form-new-note").addEventListener("submit", (e) => {
     e.preventDefault();

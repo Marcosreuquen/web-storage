@@ -105,20 +105,16 @@ export function initCardComponent() {
       }
 
       checkbox.addEventListener("change", function (e) {
-        console.log("checking note...");
         shadow.querySelector(".card__text").classList.toggle("task-done");
         State.checkedNote(Number(id), this.checked);
-        console.log(this.checked);
       });
 
       shadow.addEventListener("click", (e) => {
-        console.log("Activando nota...");
         shadow.querySelector(".card__trash").classList.toggle("show-trash");
         shadow.querySelector(".card").classList.toggle("card-active");
       });
 
       shadow.querySelector(".card__trash").addEventListener("click", () => {
-        console.log("Eliminado");
         State.deleteNote(Number(id));
       });
     }

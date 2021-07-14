@@ -388,7 +388,6 @@ var _router = require("./router");
 (function() {
     _router.initRouter(document.querySelector("#root"));
     _cards.initCardComponent();
-    console.log("Obteniendo listado de listeners...", _state.State.listeners);
     document.querySelector(".form-new-note").addEventListener("submit", (e)=>{
         e.preventDefault();
         const value = e.target[0].value;
@@ -442,18 +441,14 @@ function initCardComponent() {
             if (check === "true") shadow.querySelector(".card__text").classList.add("task-done");
             else if (check === "false") shadow.querySelector(".card__text").classList.remove("task-done");
             checkbox.addEventListener("change", function(e) {
-                console.log("checking note...");
                 shadow.querySelector(".card__text").classList.toggle("task-done");
                 _state.State.checkedNote(Number(id), this.checked);
-                console.log(this.checked);
             });
             shadow.addEventListener("click", (e)=>{
-                console.log("Activando nota...");
                 shadow.querySelector(".card__trash").classList.toggle("show-trash");
                 shadow.querySelector(".card").classList.toggle("card-active");
             });
             shadow.querySelector(".card__trash").addEventListener("click", ()=>{
-                console.log("Eliminado");
                 _state.State.deleteNote(Number(id));
             });
         }
@@ -518,41 +513,34 @@ const State = {
     data: JSON.parse(localStorage.getItem("notes")) || [],
     listeners: [],
     getState () {
-        console.log("obteniendo datos del estado...");
         return this.data;
     },
     setState (data) {
-        console.log("Se ha agregado un nuevo estado");
         this.data = data;
         localStorage.setItem("notes", JSON.stringify(this.data));
         for (const cb of this.listeners)cb();
     },
     addNewNote (content) {
-        console.log("Se agregó una nota");
         const note = new Notes(content, this.idGen());
         const data = this.getState();
         data.push(note);
         this.setState(data);
     },
     deleteNote (id) {
-        console.log("Se eliminó la nota con id: ", id);
         const newState = this.getState().filter((item)=>item.id !== id
         );
         this.setState(newState);
     },
     checkedNote (id, value) {
-        console.log("Nota chequeada: ", id);
         const lastState = this.data.filter((item)=>item.id !== id
         );
         let checkedNote = this.data.find((item)=>item.id === id
         );
         checkedNote.checked = value;
         const newState = lastState.concat(checkedNote);
-        console.log(newState);
         this.setState(newState);
     },
     idGen () {
-        console.log("Generando ID para su nueva nota...");
         let id2;
         if (this.getState().length < 1) id2 = 1;
         else {
@@ -566,7 +554,6 @@ const State = {
         return id2;
     },
     suscribe (callback) {
-        console.log("Añadiendo nuevo callback al state: ", callback);
         this.listeners.push(callback);
     }
 };
@@ -586,13 +573,11 @@ const routes = [
 ];
 function initRouter(container) {
     function goTo(path) {
-        console.log("go to: ", path);
         history.pushState({
         }, "", path);
         handleRoute(path);
     }
     function handleRoute(route) {
-        console.log(`handleRoute - nueva ruta: ${route}`);
         for (const r of routes)if (r.path.test(route)) {
             const el = r.component({
                 lastState: _state.State.getState()
