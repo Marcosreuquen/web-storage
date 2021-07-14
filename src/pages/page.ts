@@ -7,6 +7,8 @@ que, cada vez que el estado cambie la page, se entere y vuelva a imprimir todo e
 */
 import { State } from "../state";
 
+let lastState = State.getState();
+
 export function rootPage(params) {
   const lastState = params.lastState;
 
@@ -30,14 +32,16 @@ export function rootPage(params) {
     div.appendChild(card);
   });
 
-  //listeners
-  //div.querySelector("").addEventListener("click", () => {
-  //  console.log("");
-  //});
-
-  //State.suscribe(() => {
-  //  return params.goTo("/");
-  //});
-
   return div;
 }
+
+State.suscribe(() => {
+  if (lastState !== State.getState()) {
+    console.log("cambio de estado, salto a /");
+    const container = document.querySelector("#root");
+    if (container.firstChild) {
+      container.firstChild.remove();
+    }
+    container.appendChild(rootPage({ lastState: State.getState() }));
+  }
+});

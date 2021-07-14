@@ -4,7 +4,6 @@ import { initCardComponent } from "./components/cards";
 import { initRouter } from "./router";
 
 (function () {
-  console.log("Obteniendo datos desde el index: ", State.getState());
   initRouter(document.querySelector("#root"));
   initCardComponent();
   console.log("Obteniendo listado de listeners...", State.listeners);

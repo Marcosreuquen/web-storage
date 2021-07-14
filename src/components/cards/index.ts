@@ -1,29 +1,38 @@
 import { State } from "../../state";
 
 /*
-    --COMPONENTE--
-    
+--COMPONENTE--
+
 un componente <todo-item> (o el nombre que quieras):
-  que reciba atributos como text, checked, o los que se te ocurran, para mostrar la card amarilla correspondiente a cada pendiente con la data que corresponda.
-  que emita un evento (leer custom events) para que la page se entere de que algo cambió.
+que reciba atributos como text, checked, o los que se te ocurran, para mostrar la card amarilla correspondiente a cada pendiente con la data que corresponda.
+que emita un evento (leer custom events) para que la page se entere de que algo cambió.
 */
 export function initCardComponent() {
   class Card extends HTMLElement {
+    //Shadow DOM
+    shadow: any = this.attachShadow({ mode: "open" });
+
     constructor() {
       super();
       this.render();
+      State.suscribe(() => {
+        console.log("Renderizando componente...");
+        this.render();
+      });
     }
+
     render() {
       //variables previas a la llamada
+      const shadow = this.shadow;
       const text = this.textContent;
       const id = this.getAttribute("id");
-      let check = this.getAttribute("checked");
+      const check = this.getAttribute("checked");
+      let checkAttribute: string;
       if (check == "true") {
-        check = "checked";
+        checkAttribute = "checked";
+      } else {
+        checkAttribute = "none";
       }
-
-      //Shadow DOM
-      var shadow = this.attachShadow({ mode: "open" });
 
       //Estilos
       var style = document.createElement("style");
@@ -70,7 +79,7 @@ export function initCardComponent() {
       <div class="card" id="${id}">
         <p class="card__text">${text}</p>
         <div class="card__functions">
-          <input class="card__checkbox" type="checkbox" ${check}>
+          <input class="card__checkbox" type="checkbox" ${checkAttribute}>
           <div class="card__trash">
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
             <rect width="22" height="22" fill="url(#pattern0)"/>
@@ -89,17 +98,25 @@ export function initCardComponent() {
       shadow.appendChild(style);
 
       const checkbox = shadow.querySelector(".card__checkbox");
+      if (check === "true") {
+        shadow.querySelector(".card__text").classList.add("task-done");
+      } else if (check === "false") {
+        shadow.querySelector(".card__text").classList.remove("task-done");
+      }
+
       checkbox.addEventListener("change", function (e) {
         console.log("checking note...");
         shadow.querySelector(".card__text").classList.toggle("task-done");
         State.checkedNote(Number(id), this.checked);
         console.log(this.checked);
       });
+
       shadow.addEventListener("click", (e) => {
         console.log("Activando nota...");
         shadow.querySelector(".card__trash").classList.toggle("show-trash");
         shadow.querySelector(".card").classList.toggle("card-active");
       });
+
       shadow.querySelector(".card__trash").addEventListener("click", () => {
         console.log("Eliminado");
         State.deleteNote(Number(id));

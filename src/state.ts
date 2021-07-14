@@ -30,6 +30,7 @@ const State = {
 
   setState(data: Notes[]) {
     console.log("Se ha agregado un nuevo estado");
+
     this.data = data;
     localStorage.setItem("notes", JSON.stringify(this.data));
     for (const cb of this.listeners) {
@@ -53,25 +54,33 @@ const State = {
 
   checkedNote(id: number, value: boolean) {
     console.log("Nota chequeada: ", id);
-    const lastState = this.getState().filter((item) => item.id === id);
-    let checkedNote = this.getState().find((item) => item.id === id);
+
+    const lastState = this.data.filter((item) => item.id !== id);
+    let checkedNote = this.data.find((item) => item.id === id);
     checkedNote.checked = value;
     const newState = lastState.concat(checkedNote);
+    console.log(newState);
+
     this.setState(newState);
   },
 
   idGen() {
     console.log("Generando ID para su nueva nota...");
+    let id: number;
     if (this.getState().length < 1) {
-      return 1;
+      id = 1;
     } else {
       let idValues: number[] = this.getState().map((item) => item.id);
       const max = Math.max(...idValues);
-      return max + 1;
+      id = max + 1;
     }
+    if (this.getState().map((item) => item.id === id)) {
+      id += id;
+    }
+    return id;
   },
 
-  suscribe(callback: () => {}) {
+  suscribe(callback: (any) => any) {
     console.log("Añadiendo nuevo callback al state: ", callback);
     this.listeners.push(callback);
   },

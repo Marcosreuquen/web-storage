@@ -20,7 +20,7 @@ export function initRouter(container: Element) {
 
     for (const r of routes) {
       if (r.path.test(route)) {
-        const el = r.component({ goTo: goTo, lastState: State.getState() });
+        const el = r.component({ lastState: State.getState() });
 
         if (container.firstChild) {
           container.firstChild.remove();
