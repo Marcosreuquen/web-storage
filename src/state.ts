@@ -1,17 +1,8 @@
-/*
-
---STATE--
-
-con métodos para acceder y para ser escrito.
-con la información de todas las tareas y sus distintas variaciones (si están completadas o si están borradas).
-que sea el lugar donde se sincroniza el state con localstorage.
-Tip: para que sea más fácil, tenés que usar un id en cada pendiente.
-
-*/
 class Notes {
   id: number;
   content: string;
   checked: boolean;
+
   constructor(content: string, id: number) {
     this.id = id;
     this.content = content;
@@ -65,7 +56,7 @@ const State = {
       id = max + 1;
     }
     if (this.getState().map((item) => item.id === id)) {
-      id += id;
+      id++;
     }
     return id;
   },
