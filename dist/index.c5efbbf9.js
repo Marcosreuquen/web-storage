@@ -396,93 +396,7 @@ var _router = require("./router");
     });
 })();
 
-},{"./components/cards":"4vzox","./router":"gwu5I","./state":"3hDy6"}],"4vzox":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "initCardComponent", ()=>initCardComponent
-);
-var _state = require("../../state");
-const trash = require("url:../../assets/delete.svg");
-function initCardComponent() {
-    class Card extends HTMLElement {
-        constructor(){
-            super();
-            //Shadow DOM
-            this.shadow = this.attachShadow({
-                mode: "open"
-            });
-            this.render();
-            //Estilos
-            var style = document.createElement("style");
-            style.textContent = `\n      *{\n        box-sizing:border-box;\n      }\n      .card{\n        background-color: #FFF599;\n        display: flex;\n        height: auto;\n        min-height: 211px;\n        width: 311px;\n        border-radius: 8px;\n        padding: 22px 13px;\n        margin: 20px 6px;\n        box-shadow: 2px 2px 5px #444444ee;\n      }\n      .card:hover{\n        cursor:pointer;\n      }\n      .card-active{\n        border: 3px solid #000;\n      }\n      .card__text{\n        flex-grow:1;\n      }\n      .task-done{\n        text-decoration:line-through;\n      }\n      .card__functions{\n        display:flex;\n        flex-direction: column;\n        justify-content: space-around;\n      }\n      .card__checkbox, .card__trash{\n        width: 21px;\n        height: 21px;\n      }\n      .card__trash {\n        display: none;\n      }\n      .show-trash{\n        display:block;\n      }\n      `;
-            this.shadow.appendChild(style);
-        }
-        render() {
-            const card = document.createElement("div");
-            const shadow = this.shadow;
-            const text = this.textContent;
-            const id = this.getAttribute("id");
-            const check = this.getAttribute("checked");
-            let checkAttribute;
-            if (check == "true") checkAttribute = "checked";
-            else checkAttribute = "none";
-            card.classList.add("card");
-            card.setAttribute("id", id);
-            //Content
-            card.innerHTML = `\n      <p class="card__text">${text}</p>\n        <div class="card__functions">\n        <input class="card__checkbox" type="checkbox" ${checkAttribute}>\n        <div class="card__trash">\n          <img src=${trash}>\n        </div>\n        </div>\n        `;
-            const checkbox = card.querySelector(".card__checkbox");
-            if (check === "true") card.querySelector(".card__text").classList.add("task-done");
-            else if (check === "false") card.querySelector(".card__text").classList.remove("task-done");
-            checkbox.addEventListener("change", function(e) {
-                card.querySelector(".card__text").classList.toggle("task-done");
-                _state.State.checkedNote(Number(id), this.checked);
-            });
-            card.addEventListener("click", (e)=>{
-                card.querySelector(".card__trash").classList.toggle("show-trash");
-                card.classList.toggle("card-active");
-            });
-            card.querySelector(".card__trash").addEventListener("click", ()=>{
-                _state.State.deleteNote(Number(id));
-            });
-            shadow.appendChild(card);
-        }
-    }
-    customElements.define("card-note", Card);
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"367CR","../../state":"3hDy6","url:../../assets/delete.svg":"7jpx4"}],"367CR":[function(require,module,exports) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
-    };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, '__esModule', {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === 'default' || key === '__esModule') return;
-        // Skip duplicate re-exports when they have the same value.
-        if (key in dest && dest[key] === source[key]) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
-};
-
-},{}],"3hDy6":[function(require,module,exports) {
+},{"./state":"3hDy6","./components/cards":"4vzox","./router":"gwu5I"}],"3hDy6":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "State", ()=>State
@@ -543,7 +457,93 @@ const State = {
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"7jpx4":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"367CR":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, '__esModule', {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === 'default' || key === '__esModule') return;
+        // Skip duplicate re-exports when they have the same value.
+        if (key in dest && dest[key] === source[key]) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
+
+},{}],"4vzox":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "initCardComponent", ()=>initCardComponent
+);
+var _state = require("../../state");
+const trash = require("url:../../assets/delete.svg");
+function initCardComponent() {
+    class Card extends HTMLElement {
+        constructor(){
+            super();
+            //Shadow DOM
+            this.shadow = this.attachShadow({
+                mode: "open"
+            });
+            this.render();
+            //Estilos
+            var style = document.createElement("style");
+            style.textContent = `\n      *{\n        box-sizing:border-box;\n      }\n      .card{\n        background-color: #FFF599;\n        display: flex;\n        height: auto;\n        min-height: 211px;\n        width: 311px;\n        border-radius: 8px;\n        padding: 22px 13px;\n        margin: 20px 6px;\n        box-shadow: 2px 2px 5px #444444ee;\n      }\n      .card:hover{\n        cursor:pointer;\n      }\n      .card-active{\n        border: 3px solid #000;\n      }\n      .card__text{\n        flex-grow:1;\n      }\n      .task-done{\n        text-decoration:line-through;\n      }\n      .card__functions{\n        display:flex;\n        flex-direction: column;\n        justify-content: space-around;\n      }\n      .card__checkbox, .card__trash{\n        width: 21px;\n        height: 21px;\n      }\n      .card__trash {\n        display: none;\n      }\n      .show-trash{\n        display:block;\n      }\n      `;
+            this.shadow.appendChild(style);
+        }
+        render() {
+            const card = document.createElement("div");
+            const shadow = this.shadow;
+            const text = this.textContent;
+            const id = this.getAttribute("id");
+            const check = this.getAttribute("checked");
+            let checkAttribute;
+            if (check == "true") checkAttribute = "checked";
+            else checkAttribute = "none";
+            card.classList.add("card");
+            card.setAttribute("id", id);
+            //Content
+            card.innerHTML = `\n      <p class="card__text">${text}</p>\n        <div class="card__functions">\n        <input class="card__checkbox" type="checkbox" ${checkAttribute}>\n        <div class="card__trash">\n          <img src=${trash}>\n        </div>\n        </div>\n        `;
+            const checkbox = card.querySelector(".card__checkbox");
+            if (check === "true") card.querySelector(".card__text").classList.add("task-done");
+            else if (check === "false") card.querySelector(".card__text").classList.remove("task-done");
+            checkbox.addEventListener("change", function(e) {
+                card.querySelector(".card__text").classList.toggle("task-done");
+                _state.State.checkedNote(Number(id), this.checked);
+            });
+            card.addEventListener("click", (e)=>{
+                card.querySelector(".card__trash").classList.toggle("show-trash");
+                card.classList.toggle("card-active");
+            });
+            card.querySelector(".card__trash").addEventListener("click", ()=>{
+                _state.State.deleteNote(Number(id));
+            });
+            shadow.appendChild(card);
+        }
+    }
+    customElements.define("card-note", Card);
+}
+
+},{"../../state":"3hDy6","url:../../assets/delete.svg":"7jpx4","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"7jpx4":[function(require,module,exports) {
 module.exports = require('./bundle-url').getBundleURL() + "delete.dffe9160.svg";
 
 },{"./bundle-url":"3seVR"}],"3seVR":[function(require,module,exports) {
@@ -583,7 +583,7 @@ var _page = require("./pages/page");
 var _state = require("./state");
 const routes = [
     {
-        path: /\//,
+        path: /\/web-storage/,
         component: _page.rootPage
     }, 
 ];
@@ -602,14 +602,14 @@ function initRouter(container) {
             container.appendChild(el);
         }
     }
-    if (location.pathname == "/") goTo("/");
+    if (location.pathname == "/web-storage") goTo("/web-storage");
     else handleRoute(location.pathname);
     window.onpopstate = function(event) {
         handleRoute(location.pathname);
     };
 }
 
-},{"./pages/page":"6aXzP","@parcel/transformer-js/src/esmodule-helpers.js":"367CR","./state":"3hDy6"}],"6aXzP":[function(require,module,exports) {
+},{"./pages/page":"6aXzP","./state":"3hDy6","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"6aXzP":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "rootPage", ()=>rootPage
@@ -634,15 +634,13 @@ function rootPage(params) {
     return div;
 }
 _state.State.suscribe(()=>{
-    if (lastState !== _state.State.getState()) {
-        const container = document.querySelector("#root");
-        container.firstChild?.remove();
-        container.appendChild(rootPage({
-            lastState: _state.State.getState()
-        }));
-    }
+    const container = document.querySelector("#root");
+    container.firstChild?.remove();
+    container.appendChild(rootPage({
+        lastState: _state.State.getState()
+    }));
 });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"367CR","../state":"3hDy6"}]},["6ePST","15WfK"], "15WfK", "parcelRequire7303")
+},{"../state":"3hDy6","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}]},["6ePST","15WfK"], "15WfK", "parcelRequire7303")
 
 //# sourceMappingURL=index.c5efbbf9.js.map

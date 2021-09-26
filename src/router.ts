@@ -3,7 +3,7 @@ import { State } from "./state";
 
 const routes = [
   {
-    path: /\//,
+    path: /\/web-storage/,
     component: rootPage,
   },
 ];
@@ -28,8 +28,8 @@ export function initRouter(container: Element) {
     }
   }
 
-  if (location.pathname == "/") {
-    goTo("/");
+  if (location.pathname == "/web-storage") {
+    goTo("/web-storage");
   } else {
     handleRoute(location.pathname);
   }

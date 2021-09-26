@@ -21,6 +21,7 @@ const State = {
   setState(data: Notes[]) {
     this.data = data;
     localStorage.setItem("notes", JSON.stringify(this.data));
+
     for (const cb of this.listeners) {
       cb();
     }

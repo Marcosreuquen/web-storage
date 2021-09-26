@@ -39,9 +39,7 @@ export function rootPage(params) {
 }
 
 State.suscribe(() => {
-  if (lastState !== State.getState()) {
-    const container = document.querySelector("#root");
-    container.firstChild?.remove();
-    container.appendChild(rootPage({ lastState: State.getState() }));
-  }
+  const container = document.querySelector("#root");
+  container.firstChild?.remove();
+  container.appendChild(rootPage({ lastState: State.getState() }));
 });
